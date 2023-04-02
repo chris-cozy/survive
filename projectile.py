@@ -30,3 +30,6 @@ class Projectile(pygame.sprite.Sprite):
         self.pos += self.speed
         self.rect.x = self.pos.x
         self.rect.y = self.pos.y
+
+    def damage(self):
+        self.kill()

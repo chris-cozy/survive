@@ -1,5 +1,6 @@
 import pygame
 import sys
+import math
 from random import randint
 from room import Room
 from screen import Screen
@@ -15,6 +16,7 @@ ENEMY_WIDTH, ENEMY_HEIGHT = 15, 15
 CAPTION = "survive!"
 KILL_ADD = 1
 SCORE_ADD = 10
+MILLI_CONV = 1000
 
 ### HELPER FUNCTIONS ###
 
@@ -60,10 +62,7 @@ aim_len = 50
 projectiles = []
 
 # Enemy Initialization #
-enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
-enemy.set_pos(random_x(room_left, room_right), random_y(room_bottom, room_top))
 enemies = []
-enemies.append(enemy)
 
 # Sprite Group Initialization #
 spriteList_Room = pygame.sprite.Group()
@@ -75,9 +74,12 @@ spriteList_Ents.add(player)
 spriteList_Projs = pygame.sprite.Group()
 
 spriteList_Enemies = pygame.sprite.Group()
-spriteList_Enemies.add(enemy)
+
 
 playing = True
+spawnRate = 5
+time = 0
+spawnTime = 0
 
 ### GAME LOOP ###
 while playing:
@@ -105,6 +107,14 @@ while playing:
         proj.update_pos()
 
     # Enemy Updates #
+    if ((time - spawnTime) > spawnRate):
+        enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
+        enemy.set_pos(random_x(room_left, room_right),
+                      random_y(room_bottom, room_top))
+        enemies.append(enemy)
+        spriteList_Enemies.add(enemy)
+        spawnTime = time
+
     for enem in enemies:
         enem.tracking(player)
 
@@ -112,10 +122,14 @@ while playing:
     for proj in projectiles:
         for enem in enemies:
             if pygame.sprite.collide_mask(proj, enem):
-                enem.kill()
-                proj.kill()
+                enem.damage()
+                proj.damage()
                 player.kills += KILL_ADD
                 player.score += SCORE_ADD
+                continue
+
+    # Time Updates #
+    time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
 
     # Screen Logic and Draws #
     screen.fill()
@@ -123,6 +137,7 @@ while playing:
     screen.draw(spriteList_Ents)
     screen.draw(spriteList_Projs)
     screen.draw(spriteList_Enemies)
+    screen.display_text(player, time)
 
     # Draw the Aim
     pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)

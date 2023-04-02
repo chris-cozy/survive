@@ -24,9 +24,9 @@ class Screen():
     def draw(self, spriteList):
         spriteList.draw(self.surface)
 
-    def display_text(self, playerScore, time, playerHealth, kills):
+    def display_text(self, player, time):
         font = pygame.font.Font(None, 74)
-        text = font.render(str(playerHealth), 1, WHITE)
+        text = font.render(str(player.kills), 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
 
     def flip(self):
