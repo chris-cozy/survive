@@ -5,14 +5,24 @@ from room import Room
 from screen import Screen
 from player import Player
 from projectile import Projectile
+from enemy import Enemy
 
 ### CONSTANTS ###
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 900, 700
 ROOM_WIDTH, ROOM_HEIGHT = 800, 600
 PLAYER_WIDTH, PLAYER_HEIGHT = 20, 20
+ENEMY_WIDTH, ENEMY_HEIGHT = 15, 15
 CAPTION = "survive!"
 
 ### HELPER FUNCTIONS ###
+
+
+def random_x(room_left, room_right):
+    return randint(room_left, room_right)
+
+
+def random_y(room_bottom, room_top):
+    return randint(room_bottom, room_top)
 
 
 ### MAIN SCRIPT ###
@@ -47,6 +57,12 @@ aim_len = 50
 # Projectile Initialization #
 projectiles = []
 
+# Enemy Initialization #
+enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
+enemy.set_pos(random_x(room_left, room_right), random_y(room_bottom, room_top))
+enemies = []
+enemies.append(enemy)
+
 # Sprite Group Initialization #
 spriteList_Room = pygame.sprite.Group()
 spriteList_Room.add(room)
@@ -55,6 +71,9 @@ spriteList_Ents = pygame.sprite.Group()
 spriteList_Ents.add(player)
 
 spriteList_Projs = pygame.sprite.Group()
+
+spriteList_Enemies = pygame.sprite.Group()
+spriteList_Enemies.add(enemy)
 
 playing = True
 
@@ -83,11 +102,16 @@ while playing:
     for proj in projectiles:
         proj.update_pos()
 
+    # Enemy Updates #
+    for enem in enemies:
+        enem.tracking(player)
+
     # Screen Logic and Draws #
     screen.fill()
     screen.draw(spriteList_Room)
     screen.draw(spriteList_Ents)
     screen.draw(spriteList_Projs)
+    screen.draw(spriteList_Enemies)
 
     # Draw the Aim
     pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
