@@ -23,6 +23,11 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = pygame.math.Vector2(self.rect.center)
 
+        self.dead = False
+
+    def __del__(self):
+        print("Enemy destroyed")
+
     def set_pos(self, x, y):
         self.rect.x = x
         self.rect.y = y
@@ -37,3 +42,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y += self.velocity.y
 
         self.pos += self.rect.center
+
+    def die(self):
+        if self.dead == True:
+            self.kill()

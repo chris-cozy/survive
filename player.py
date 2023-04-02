@@ -17,6 +17,8 @@ class Player(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, BLUE, [0, 0, self.width, self.height])
 
         self.velocity = 5
+        self.kills = 0
+        self.score = 0
 
         self.rect = self.image.get_rect()
 

@@ -13,6 +13,8 @@ ROOM_WIDTH, ROOM_HEIGHT = 800, 600
 PLAYER_WIDTH, PLAYER_HEIGHT = 20, 20
 ENEMY_WIDTH, ENEMY_HEIGHT = 15, 15
 CAPTION = "survive!"
+KILL_ADD = 1
+SCORE_ADD = 10
 
 ### HELPER FUNCTIONS ###
 
@@ -105,6 +107,15 @@ while playing:
     # Enemy Updates #
     for enem in enemies:
         enem.tracking(player)
+
+    # Collision Updates #
+    for proj in projectiles:
+        for enem in enemies:
+            if pygame.sprite.collide_mask(proj, enem):
+                enem.kill()
+                proj.kill()
+                player.kills += KILL_ADD
+                player.score += SCORE_ADD
 
     # Screen Logic and Draws #
     screen.fill()
