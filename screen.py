@@ -4,6 +4,7 @@ pygame.init()
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+FONT_SIZE = 50
 
 
 class Screen():
@@ -25,11 +26,11 @@ class Screen():
         spriteList.draw(self.surface)
 
     def display_text(self, player, time):
-        font = pygame.font.Font(None, 74)
-        text = font.render(str(player.kills), 1, WHITE)
+        font = pygame.font.Font(None, FONT_SIZE)
+        text = font.render("Kills: " + str(player.kills), 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
-        text = font.render(str(time), 1, WHITE)
-        self.surface.blit(text, (self.screenWidth/2, 10))
+        text = font.render("Time: " + str(time), 1, WHITE)
+        self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
 
     def flip(self):
         pygame.display.flip()
