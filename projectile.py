@@ -3,14 +3,16 @@ import pygame
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 SPEED = 5
+LIFETIME = 1
 
 
 class Projectile(pygame.sprite.Sprite):
 
-    def __init__(self, start, mouse):
+    def __init__(self, start, mouse, spawnTime):
         super().__init__()
         self.width = 5
         self.height = 5
+        self.spawnTime = spawnTime
 
         self.start = start
         self.mouse = mouse
@@ -30,6 +32,10 @@ class Projectile(pygame.sprite.Sprite):
         self.pos += self.speed
         self.rect.x = self.pos.x
         self.rect.y = self.pos.y
+
+    def check_life(self, time):
+        if ((time - self.spawnTime) > LIFETIME):
+            self.kill()
 
     def damage(self):
         self.kill()

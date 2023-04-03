@@ -77,7 +77,7 @@ spriteList_Enemies = pygame.sprite.Group()
 
 
 playing = True
-spawnRate = 5
+spawnRate = 3
 time = 0
 spawnTime = 0
 
@@ -90,7 +90,7 @@ while playing:
             if event.key == pygame.K_x:
                 playing = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            projectile = Projectile(aim_start, mouse)
+            projectile = Projectile(aim_start, mouse, time)
             projectiles.append(projectile)
             spriteList_Projs.add(projectile)
 
@@ -105,6 +105,7 @@ while playing:
     # Projectile Updates
     for proj in projectiles:
         proj.update_pos()
+        proj.check_life(time)
 
     # Enemy Updates #
     if ((time - spawnTime) > spawnRate):
