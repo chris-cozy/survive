@@ -33,9 +33,10 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.x = self.pos.x
         self.rect.y = self.pos.y
 
-    def check_life(self, time):
+    def life_over(self, time):
         if ((time - self.spawnTime) > LIFETIME):
-            self.kill()
+            return True
+        return False
 
     def damage(self):
         self.kill()

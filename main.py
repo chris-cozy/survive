@@ -21,14 +21,6 @@ MILLI_CONV = 1000
 ### HELPER FUNCTIONS ###
 
 
-def random_x(room_left, room_right):
-    return randint(room_left, room_right)
-
-
-def random_y(room_bottom, room_top):
-    return randint(room_bottom, room_top)
-
-
 ### MAIN SCRIPT ###
 pygame.init()
 clock = pygame.time.Clock()
@@ -93,6 +85,7 @@ while playing:
             projectile = Projectile(aim_start, mouse, time)
             projectiles.append(projectile)
             spriteList_Projs.add(projectile)
+            print(projectiles)
 
     # Player Updates #
     player.check_keys(room_bottom, room_top, room_left, room_right)
@@ -102,32 +95,32 @@ while playing:
     aim_start = pygame.math.Vector2(player.rect.center)
     aim_end = aim_start + (mouse - aim_start).normalize() * aim_len
 
-    # Projectile Updates
-    for proj in projectiles:
-        proj.update_pos()
-        proj.check_life(time)
-
-    # Enemy Updates #
+    # Enemy Spawn Updates #
     if ((time - spawnTime) > spawnRate):
         enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
-        enemy.set_pos(random_x(room_left, room_right),
-                      random_y(room_bottom, room_top))
+        enemy.set_spawn(room_left, room_right, room_bottom, room_top, player)
         enemies.append(enemy)
         spriteList_Enemies.add(enemy)
         spawnTime = time
+        print(enemies)
 
+    # Projectile, Enemy, and Collision Updates #
     for enem in enemies:
         enem.tracking(player)
 
-    # Collision Updates #
     for proj in projectiles:
+        proj.update_pos()
+        if (proj.life_over(time)):
+            proj.damage()
+            projectiles.remove(proj)
         for enem in enemies:
             if pygame.sprite.collide_mask(proj, enem):
-                enem.damage()
-                proj.damage()
                 player.kills += KILL_ADD
                 player.score += SCORE_ADD
-                continue
+                enem.damage()
+                proj.damage()
+                enemies.remove(enem)
+                projectiles.remove(proj)
 
     # Time Updates #
     time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
