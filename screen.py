@@ -28,6 +28,8 @@ class Screen():
         font = pygame.font.Font(None, 74)
         text = font.render(str(player.kills), 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
+        text = font.render(str(time), 1, WHITE)
+        self.surface.blit(text, (self.screenWidth/2, 10))
 
     def flip(self):
         pygame.display.flip()
