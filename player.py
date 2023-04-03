@@ -42,19 +42,19 @@ class Player(pygame.sprite.Sprite):
 
     def check_keys(self, roomBottom, roomTop, roomLeft, roomRight):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             if (self.rect.y > roomBottom):
                 self.move_up(self.velocity)
 
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_s]:
             if ((self.rect.y + self.height) < roomTop):
                 self.move_down(self.velocity)
 
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             if (self.rect.x > roomLeft):
                 self.move_left(self.velocity)
 
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             if ((self.rect.x + self.width) < roomRight):
                 self.move_right(self.velocity)
 
