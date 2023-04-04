@@ -86,4 +86,4 @@ class Player(pygame.sprite.Sprite):
         elif (pow.type == POWERUP_TYPES[1]):
             self.health += 25
         elif (pow.type == POWERUP_TYPES[2]):
-            self.fireRate = 0
+            self.fireRate -= 0.10

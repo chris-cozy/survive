@@ -110,6 +110,7 @@ while playing:
 
         spawnRate = 3
         time = 0
+        rawTime = 0
         spawnTime = 0
         inGame = True
 
@@ -123,7 +124,7 @@ while playing:
                     if event.key == pygame.K_x:
                         pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if((time - player.fireTime) > player.fireRate):
+                    if((rawTime - player.fireTime) > player.fireRate):
                         projectile = Projectile(aim_start, mouse, time)
                         projectiles.append(projectile)
                         spriteList_Projs.add(projectile)
@@ -206,6 +207,7 @@ while playing:
 
             # Time Updates #
             time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
+            rawTime = math.trunc(pygame.time.get_ticks())
 
             # Screen Logic and Draws #
             screen.fill()
