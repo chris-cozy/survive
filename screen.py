@@ -36,7 +36,7 @@ class Screen():
 
     def draw_start_menu(self):
         self.surface.fill((0, 0, 0))
-        font = pygame.font.SysFont('arial', 40)
+        font = pygame.font.SysFont(None, FONT_SIZE)
         title = font.render('SURV!V3', True, (255, 255, 255))
         start_button = font.render(
             'Press Space to Start', True, (255, 255, 255))
@@ -48,7 +48,7 @@ class Screen():
 
     def draw_game_over_screen(self):
         self.surface.fill((0, 0, 0))
-        font = pygame.font.SysFont('arial', 40)
+        font = pygame.font.SysFont(None, FONT_SIZE)
         title = font.render('Game Over', True, (255, 255, 255))
         restart_button = font.render('R - Restart', True, (255, 255, 255))
         quit_button = font.render('Q - Quit', True, (255, 255, 255))
