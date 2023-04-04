@@ -23,6 +23,7 @@ COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
 ### GAME SETUP ###
 gameState = "startMenu"
 
+difficulties = ["easy", "medium", "hard", "crazy", "impossible"]
 
 ### MAIN SCRIPT ###
 pygame.init()
@@ -95,18 +96,26 @@ while playing:
         spawnTime = 0
         hurtTime = 0
         invTime = 2
+        fireRate = 1
+        fireTime = 0
         inGame = True
+        difficultyIndex = 0
+
+        difficultyRate = 10
+        difficultyTime = 0
 
         while inGame:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_x:
                         pygame.quit()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    projectile = Projectile(aim_start, mouse, time)
-                    projectiles.append(projectile)
-                    spriteList_Projs.add(projectile)
-                    print(projectiles)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if((time - fireTime) > fireRate):
+                        projectile = Projectile(aim_start, mouse, time)
+                        projectiles.append(projectile)
+                        spriteList_Projs.add(projectile)
+                        fireTime = time
+                        print(projectiles)
 
             # Player Updates #
             player.check_keys(room_bottom, room_top, room_left, room_right)
@@ -119,6 +128,22 @@ while playing:
             mouse = pygame.mouse.get_pos()
             aim_start = pygame.math.Vector2(player.rect.center)
             aim_end = aim_start + (mouse - aim_start).normalize() * aim_len
+
+            # Difficulty Updates #
+            difficulty = difficulties[difficultyIndex]
+            if (difficulty == difficulties[0]):
+                spawnRate = 4
+            elif (difficulty == difficulties[1]):
+                spawnRate = 3
+            elif (difficulty == difficulties[2]):
+                spawnRate = 2
+            elif (difficulty == difficulties[3]):
+                spawnRate = 1
+
+            if((time - difficultyTime) > difficultyRate):
+                if difficultyIndex < 4:
+                    difficultyIndex += 1
+                    difficultyTime = time
 
             # Enemy Spawn Updates #
             if ((time - spawnTime) > spawnRate):
@@ -161,7 +186,7 @@ while playing:
             screen.draw(spriteList_Ents)
             screen.draw(spriteList_Projs)
             screen.draw(spriteList_Enemies)
-            screen.display_text(player, time)
+            screen.display_text(player, time, difficulty)
 
             # Draw the Aim for debugging
             # pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)

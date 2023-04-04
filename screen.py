@@ -27,7 +27,7 @@ class Screen():
     def draw(self, spriteList):
         spriteList.draw(self.surface)
 
-    def display_text(self, player, time):
+    def display_text(self, player, time, difficulty):
         font = pygame.font.Font(None, FONT_SIZE)
         text = font.render("Kills: " + str(player.kills), 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
@@ -35,6 +35,9 @@ class Screen():
         self.surface.blit(text, ((self.screenWidth/4) * 2, 10))
         text = font.render("Time: " + str(time), 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
+        text = font.render(difficulty, 1, WHITE)
+        self.surface.blit(text, ((self.screenWidth/4) *
+                                 2, (self.screenHeight - 50)))
 
     def draw_start_menu(self):
         self.surface.fill((0, 0, 0))
