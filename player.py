@@ -25,6 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.velocity = 5
         self.kills = 0
         self.score = 0
+        self.maxHealth = HEALTH
         self.health = HEALTH
         self.dead = False
         self.fireRate = 1

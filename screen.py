@@ -31,8 +31,14 @@ class Screen():
         font = pygame.font.Font(None, FONT_SIZE)
         text = font.render("Kills: " + str(player.kills), 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
-        text = font.render("Health: " + str(player.health), 1, WHITE)
-        self.surface.blit(text, ((self.screenWidth/4) * 2, 10))
+
+        #text = font.render("Health: " + str(player.health), 1, WHITE)
+        #self.surface.blit(text, ((self.screenWidth/4) * 2, 10))
+        pygame.draw.rect(self.surface, (255, 0, 0),
+                         [(self.screenWidth/4) * 2, 10, 50, 10])
+        pygame.draw.rect(self.surface, (0, 128, 0),
+                         [(self.screenWidth/4) * 2, 10, 50 - (1 * ((player.maxHealth - player.health)/2)), 10])
+
         text = font.render("Time: " + str(time), 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
         text = font.render(difficulty, 1, WHITE)
