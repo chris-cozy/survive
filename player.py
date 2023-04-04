@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.kills = 0
         self.score = 0
         self.health = HEALTH
+        self.dead = False
 
         self.rect = self.image.get_rect()
 
@@ -66,4 +67,5 @@ class Player(pygame.sprite.Sprite):
     def damage(self):
         self.health -= ENEMY_DAMAGE
         if self.health <= 0:
+            self.dead = True
             self.kill()

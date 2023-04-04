@@ -105,6 +105,9 @@ while playing:
 
         # Player Updates #
         player.check_keys(room_bottom, room_top, room_left, room_right)
+        if player.dead:
+            gameState = "gameOver"
+            gameOver = True
 
         # Aim Updates #
         mouse = pygame.mouse.get_pos()
@@ -160,5 +163,13 @@ while playing:
         screen.flip()
 
         clock.tick(60)
+
+    elif gameState == "gameOver":
+        screen.draw_game_over_screen()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_r]:
+            gameState = "startMenu"
+        elif keys[pygame.K_q]:
+            playing = False
 
 pygame.quit()

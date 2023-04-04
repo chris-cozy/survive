@@ -46,5 +46,19 @@ class Screen():
                                          2, self.screenHeight/2 + start_button.get_height()/2))
         pygame.display.update()
 
+    def draw_game_over_screen(self):
+        self.surface.fill((0, 0, 0))
+        font = pygame.font.SysFont('arial', 40)
+        title = font.render('Game Over', True, (255, 255, 255))
+        restart_button = font.render('R - Restart', True, (255, 255, 255))
+        quit_button = font.render('Q - Quit', True, (255, 255, 255))
+        self.surface.blit(title, (self.screenWidth/2 - title.get_width() /
+                                  2, self.screenHeight/2 - title.get_height()/3))
+        self.surface.blit(restart_button, (self.screenWidth/2 - restart_button.get_width() /
+                                           2, self.screenHeight/1.9 + restart_button.get_height()))
+        self.surface.blit(quit_button, (self.screenWidth/2 - quit_button.get_width() /
+                                        2, self.screenHeight/2 + quit_button.get_height()/2))
+        pygame.display.update()
+
     def flip(self):
         pygame.display.flip()
