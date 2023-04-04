@@ -11,6 +11,7 @@ from enemy import Enemy
 ### CONSTANTS ###
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 900, 700
 ROOM_WIDTH, ROOM_HEIGHT = 800, 600
+BORDER_OFFSET = 15
 PLAYER_WIDTH, PLAYER_HEIGHT = 20, 20
 ENEMY_WIDTH, ENEMY_HEIGHT = 15, 15
 CAPTION = "survive!"
@@ -18,7 +19,7 @@ KILL_ADD = 1
 SCORE_ADD = 10
 MILLI_CONV = 1000
 COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
-          (222, 0, 67), (248, 135, 255), (14, 217, 246)]
+          (222, 0, 67), (248, 135, 255), (110, 109, 113), (255, 255, 255)]
 
 ### GAME SETUP ###
 gameState = "startMenu"
@@ -54,7 +55,7 @@ while playing:
 
     elif gameState == "inGame":
         # Room Initialization #
-        room = Room(ROOM_WIDTH, ROOM_HEIGHT)
+        room = Room(ROOM_WIDTH, ROOM_HEIGHT, COLORS[5])
         x_offset = (SCREEN_WIDTH - ROOM_WIDTH)/2
         y_offset = (SCREEN_HEIGHT - ROOM_HEIGHT)/2
         room_bottom = x_offset
@@ -62,6 +63,13 @@ while playing:
         room_left = y_offset
         room_right = room_left + ROOM_WIDTH
         room.set_pos(x_offset, y_offset)
+
+        # Border Initialization #
+        border = Room(ROOM_WIDTH + BORDER_OFFSET,
+                      ROOM_HEIGHT + BORDER_OFFSET, COLORS[6])
+        x_offset = (SCREEN_WIDTH - ROOM_WIDTH - (BORDER_OFFSET/2))/2
+        y_offset = (SCREEN_HEIGHT - ROOM_HEIGHT - (BORDER_OFFSET/2))/2
+        border.set_pos(x_offset, y_offset)
 
         # Player Initialization #
         player = Player(PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -82,6 +90,7 @@ while playing:
 
         # Sprite Group Initialization #
         spriteList_Room = pygame.sprite.Group()
+        # spriteList_Room.add(border)
         spriteList_Room.add(room)
 
         spriteList_Ents = pygame.sprite.Group()
