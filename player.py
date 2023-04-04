@@ -26,6 +26,11 @@ class Player(pygame.sprite.Sprite):
         self.score = 0
         self.health = HEALTH
         self.dead = False
+        self.fireRate = 1
+        self.fireTime = 0
+
+        self.invTime = 1
+        self.hurtTime = 0
 
         self.rect = self.image.get_rect()
 

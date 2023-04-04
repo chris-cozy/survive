@@ -103,13 +103,9 @@ while playing:
         spawnRate = 3
         time = 0
         spawnTime = 0
-        hurtTime = 0
-        invTime = 2
-        fireRate = 1
-        fireTime = 0
         inGame = True
-        difficultyIndex = 0
 
+        difficultyIndex = 0
         difficultyRate = 10
         difficultyTime = 0
 
@@ -119,11 +115,11 @@ while playing:
                     if event.key == pygame.K_x:
                         pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if((time - fireTime) > fireRate):
+                    if((time - player.fireTime) > player.fireRate):
                         projectile = Projectile(aim_start, mouse, time)
                         projectiles.append(projectile)
                         spriteList_Projs.add(projectile)
-                        fireTime = time
+                        player.fireTime = time
                         print(projectiles)
 
             # Player Updates #
@@ -168,9 +164,9 @@ while playing:
             for enem in enemies:
                 enem.tracking(player)
                 if pygame.sprite.collide_mask(enem, player):
-                    if ((time - hurtTime) > invTime):
+                    if ((time - player.hurtTime) > player.invTime):
                         player.damage()
-                        hurtTime = time
+                        player.hurtTime = time
 
             for proj in projectiles:
                 proj.update_pos()
