@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 
 pygame.init()
 
@@ -29,18 +30,17 @@ class Screen():
 
     def display_text(self, player, time, difficulty):
         font = pygame.font.Font(None, FONT_SIZE)
-        text = font.render("Kills: " + str(player.kills), 1, WHITE)
+        text = font.render(str(player.kills) + "kills", 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
 
-        #text = font.render("Health: " + str(player.health), 1, WHITE)
-        #self.surface.blit(text, ((self.screenWidth/4) * 2, 10))
         pygame.draw.rect(self.surface, (255, 0, 0),
-                         [(self.screenWidth/4) * 2, 10, 50, 10])
+                         [((self.screenWidth/4) * 2) - 25, 10, 100, 15])
         pygame.draw.rect(self.surface, (0, 128, 0),
-                         [(self.screenWidth/4) * 2, 10, 50 - (1 * ((player.maxHealth - player.health)/2)), 10])
+                         [((self.screenWidth/4) * 2) - 25, 10, 100 - (1 * ((player.maxHealth - player.health))), 15])
 
         text = font.render("Time: " + str(time), 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
+
         text = font.render(difficulty, 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) *
                                  2, (self.screenHeight - 50)))
@@ -48,9 +48,9 @@ class Screen():
     def draw_start_menu(self):
         self.surface.fill((0, 0, 0))
         font = pygame.font.SysFont(None, FONT_SIZE)
-        title = font.render('SURV!V3', True, (255, 255, 255))
+        title = font.render('SURV!V3', True, COLORS[randint(0, 5)])
         start_button = font.render(
-            'Press Space to Start', True, (255, 255, 255))
+            'Press Space to Start', True, WHITE)
         self.surface.blit(title, (self.screenWidth/2 - title.get_width() /
                                   2, self.screenHeight/2 - title.get_height()/2))
         self.surface.blit(start_button, (self.screenWidth/2 - start_button.get_width() /
