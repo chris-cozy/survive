@@ -128,7 +128,7 @@ while playing:
                         projectile = Projectile(aim_start, mouse, time)
                         projectiles.append(projectile)
                         spriteList_Projs.add(projectile)
-                        player.fireTime = time
+                        player.fireTime = rawTime
                         print(projectiles)
 
             # Player Updates #
@@ -207,7 +207,7 @@ while playing:
 
             # Time Updates #
             time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
-            rawTime = math.trunc(pygame.time.get_ticks())
+            rawTime = pygame.time.get_ticks()/MILLI_CONV
 
             # Screen Logic and Draws #
             screen.fill()
