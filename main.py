@@ -21,6 +21,10 @@ MILLI_CONV = 1000
 ### HELPER FUNCTIONS ###
 
 
+### GAME SETUP ###
+gameState = "startMenu"
+
+
 ### MAIN SCRIPT ###
 pygame.init()
 clock = pygame.time.Clock()
@@ -83,67 +87,78 @@ while playing:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x:
                 playing = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            projectile = Projectile(aim_start, mouse, time)
-            projectiles.append(projectile)
-            spriteList_Projs.add(projectile)
-            print(projectiles)
 
-    # Player Updates #
-    player.check_keys(room_bottom, room_top, room_left, room_right)
+    if gameState == "startMenu":
+        screen.draw_start_menu()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            gameState = "inGame"
+            gameOver = False
 
-    # Aim Updates #
-    mouse = pygame.mouse.get_pos()
-    aim_start = pygame.math.Vector2(player.rect.center)
-    aim_end = aim_start + (mouse - aim_start).normalize() * aim_len
+    elif gameState == "inGame":
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                projectile = Projectile(aim_start, mouse, time)
+                projectiles.append(projectile)
+                spriteList_Projs.add(projectile)
+                print(projectiles)
 
-    # Enemy Spawn Updates #
-    if ((time - spawnTime) > spawnRate):
-        enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
-        enemy.set_spawn(room_left, room_right, room_bottom, room_top, player)
-        enemies.append(enemy)
-        spriteList_Enemies.add(enemy)
-        spawnTime = time
-        print(enemies)
+        # Player Updates #
+        player.check_keys(room_bottom, room_top, room_left, room_right)
 
-    # Projectile, Enemy, and Collision Updates #
-    for enem in enemies:
-        enem.tracking(player)
-        if pygame.sprite.collide_mask(enem, player):
-            if ((time - hurtTime) > invTime):
-                player.damage()
-                hurtTime = time
+        # Aim Updates #
+        mouse = pygame.mouse.get_pos()
+        aim_start = pygame.math.Vector2(player.rect.center)
+        aim_end = aim_start + (mouse - aim_start).normalize() * aim_len
 
-    for proj in projectiles:
-        proj.update_pos()
-        if (proj.life_over(time)):
-            proj.damage()
-            projectiles.remove(proj)
+        # Enemy Spawn Updates #
+        if ((time - spawnTime) > spawnRate):
+            enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
+            enemy.set_spawn(room_left, room_right,
+                            room_bottom, room_top, player)
+            enemies.append(enemy)
+            spriteList_Enemies.add(enemy)
+            spawnTime = time
+            print(enemies)
+
+        # Projectile, Enemy, and Collision Updates #
         for enem in enemies:
-            if pygame.sprite.collide_mask(proj, enem):
-                player.kills += KILL_ADD
-                player.score += SCORE_ADD
-                enem.damage()
+            enem.tracking(player)
+            if pygame.sprite.collide_mask(enem, player):
+                if ((time - hurtTime) > invTime):
+                    player.damage()
+                    hurtTime = time
+
+        for proj in projectiles:
+            proj.update_pos()
+            if (proj.life_over(time)):
                 proj.damage()
-                enemies.remove(enem)
                 projectiles.remove(proj)
+            for enem in enemies:
+                if pygame.sprite.collide_mask(proj, enem):
+                    player.kills += KILL_ADD
+                    player.score += SCORE_ADD
+                    enem.damage()
+                    proj.damage()
+                    enemies.remove(enem)
+                    projectiles.remove(proj)
 
-    # Time Updates #
-    time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
+        # Time Updates #
+        time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
 
-    # Screen Logic and Draws #
-    screen.fill()
-    screen.draw(spriteList_Room)
-    screen.draw(spriteList_Ents)
-    screen.draw(spriteList_Projs)
-    screen.draw(spriteList_Enemies)
-    screen.display_text(player, time)
+        # Screen Logic and Draws #
+        screen.fill()
+        screen.draw(spriteList_Room)
+        screen.draw(spriteList_Ents)
+        screen.draw(spriteList_Projs)
+        screen.draw(spriteList_Enemies)
+        screen.display_text(player, time)
 
-    # Draw the Aim
-    pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
+        # Draw the Aim
+        pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
 
-    screen.flip()
+        screen.flip()
 
-    clock.tick(60)
+        clock.tick(60)
 
 pygame.quit()
