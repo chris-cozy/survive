@@ -2,6 +2,8 @@ import pygame
 
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
+          (222, 0, 67), (248, 135, 255)]
 SPEED = 5
 LIFETIME = 1
 
@@ -24,7 +26,7 @@ class Projectile(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
 
-        pygame.draw.rect(self.image, BLUE, [
+        pygame.draw.rect(self.image, COLORS[0], [
                          0, 0, self.width, self.height])
         self.rect = self.image.get_rect()
 

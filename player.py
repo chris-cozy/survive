@@ -2,6 +2,8 @@ import pygame
 
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
+          (222, 0, 67), (248, 135, 255)]
 HEALTH = 100
 ENEMY_DAMAGE = 50
 
@@ -16,7 +18,8 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
 
-        pygame.draw.rect(self.image, BLUE, [0, 0, self.width, self.height])
+        pygame.draw.rect(self.image, COLORS[1], [
+                         0, 0, self.width, self.height])
 
         self.velocity = 5
         self.kills = 0

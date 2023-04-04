@@ -17,6 +17,8 @@ CAPTION = "survive!"
 KILL_ADD = 1
 SCORE_ADD = 10
 MILLI_CONV = 1000
+COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
+          (222, 0, 67), (248, 135, 255), (14, 217, 246)]
 
 ### GAME SETUP ###
 gameState = "startMenu"
@@ -97,7 +99,10 @@ while playing:
 
         while inGame:
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_x:
+                        pygame.quit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
                     projectile = Projectile(aim_start, mouse, time)
                     projectiles.append(projectile)
                     spriteList_Projs.add(projectile)
@@ -158,8 +163,8 @@ while playing:
             screen.draw(spriteList_Enemies)
             screen.display_text(player, time)
 
-            # Draw the Aim
-            pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
+            # Draw the Aim for debugging
+            # pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
 
             screen.flip()
 

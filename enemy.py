@@ -3,6 +3,8 @@ from random import randint
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
+COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
+          (222, 0, 67), (248, 135, 255)]
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -19,7 +21,8 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
 
-        pygame.draw.rect(self.image, RED, [0, 0, self.width, self.height])
+        pygame.draw.rect(self.image, COLORS[3], [
+                         0, 0, self.width, self.height])
 
         self.rect = self.image.get_rect()
         self.pos = pygame.math.Vector2(self.rect.center)

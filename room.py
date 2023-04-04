@@ -1,7 +1,8 @@
 import pygame
 
 BLACK = (0, 0, 0)
-GREY = (128, 128, 128)
+COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
+          (222, 0, 67), (248, 135, 255), (110, 109, 113)]
 
 
 class Room(pygame.sprite.Sprite):
@@ -13,7 +14,7 @@ class Room(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
 
-        pygame.draw.rect(self.image, GREY, [0, 0, width, height])
+        pygame.draw.rect(self.image, COLORS[5], [0, 0, width, height])
         self.rect = self.image.get_rect()
 
     def set_pos(self, x, y):
