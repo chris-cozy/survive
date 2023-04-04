@@ -7,6 +7,7 @@ from screen import Screen
 from player import Player
 from projectile import Projectile
 from enemy import Enemy
+from powerup import Powerup
 
 ### CONSTANTS ###
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 900, 700
@@ -20,11 +21,13 @@ SCORE_ADD = 10
 MILLI_CONV = 1000
 COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255), (110, 109, 113), (255, 255, 255)]
+CHANCE = 1
 
 ### GAME SETUP ###
 gameState = "startMenu"
 
 difficulties = ["easy", "medium", "hard", "crazy", "impossible"]
+powerupTypes = ["speed", "health", "fireRate"]
 
 ### MAIN SCRIPT ###
 pygame.init()
@@ -88,6 +91,9 @@ while playing:
         # Enemy Initialization #
         enemies = []
 
+        # Powerup Initialization #
+        powerups = []
+
         # Sprite Group Initialization #
         spriteList_Room = pygame.sprite.Group()
         # spriteList_Room.add(border)
@@ -99,6 +105,8 @@ while playing:
         spriteList_Projs = pygame.sprite.Group()
 
         spriteList_Enemies = pygame.sprite.Group()
+
+        spriteList_Powerups = pygame.sprite.Group()
 
         spawnRate = 3
         time = 0
@@ -177,10 +185,24 @@ while playing:
                     if pygame.sprite.collide_mask(proj, enem):
                         player.kills += KILL_ADD
                         player.score += SCORE_ADD
+                        # 20% chance to spawn a random powerup
+                        if (randint(1, 5) == CHANCE):
+                            powerup = Powerup(powerupTypes[randint(0, 2)])
+                            powerup.set_pos(enem)
+                            powerups.append(powerup)
+                            spriteList_Powerups.add(powerup)
+                            print(powerups)
                         enem.damage()
                         proj.damage()
                         enemies.remove(enem)
                         projectiles.remove(proj)
+
+             # Powerup Updates #
+            for pow in powerups:
+                if pygame.sprite.collide_mask(pow, player):
+                    player.add_powerup(pow)
+                    pow.damage()
+                    powerups.remove(pow)
 
             # Time Updates #
             time = math.trunc(pygame.time.get_ticks()/MILLI_CONV)
@@ -191,6 +213,7 @@ while playing:
             screen.draw(spriteList_Ents)
             screen.draw(spriteList_Projs)
             screen.draw(spriteList_Enemies)
+            screen.draw(spriteList_Powerups)
             screen.display_text(player, time, difficulty)
 
             # Draw the Aim for debugging

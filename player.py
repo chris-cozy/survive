@@ -6,6 +6,7 @@ COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255)]
 HEALTH = 100
 ENEMY_DAMAGE = 50
+POWERUP_TYPES = ["speed", "health", "fireRate"]
 
 
 class Player(pygame.sprite.Sprite):
@@ -77,3 +78,11 @@ class Player(pygame.sprite.Sprite):
         if self.health <= 0:
             self.dead = True
             self.kill()
+
+    def add_powerup(self, pow):
+        if (pow.type == POWERUP_TYPES[0]):
+            self.velocity += 2
+        elif (pow.type == POWERUP_TYPES[1]):
+            self.health += 25
+        elif (pow.type == POWERUP_TYPES[2]):
+            self.fireRate = 0
