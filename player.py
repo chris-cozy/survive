@@ -2,6 +2,8 @@ import pygame
 
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+HEALTH = 100
+ENEMY_DAMAGE = 50
 
 
 class Player(pygame.sprite.Sprite):
@@ -19,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.velocity = 5
         self.kills = 0
         self.score = 0
+        self.health = HEALTH
 
         self.rect = self.image.get_rect()
 
@@ -59,3 +62,8 @@ class Player(pygame.sprite.Sprite):
                 self.move_right(self.velocity)
 
     # COMBAT #
+
+    def damage(self):
+        self.health -= ENEMY_DAMAGE
+        if self.health <= 0:
+            self.kill()

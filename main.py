@@ -72,6 +72,8 @@ playing = True
 spawnRate = 3
 time = 0
 spawnTime = 0
+hurtTime = 0
+invTime = 2
 
 ### GAME LOOP ###
 while playing:
@@ -107,6 +109,10 @@ while playing:
     # Projectile, Enemy, and Collision Updates #
     for enem in enemies:
         enem.tracking(player)
+        if pygame.sprite.collide_mask(enem, player):
+            if ((time - hurtTime) > invTime):
+                player.damage()
+                hurtTime = time
 
     for proj in projectiles:
         proj.update_pos()

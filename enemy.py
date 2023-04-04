@@ -42,10 +42,11 @@ class Enemy(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
 
     def tracking(self, player):
+        self.safe_net = (player.width/2) + (self.width/2)
         self.distance = pygame.math.Vector2(
             player.rect.center) - pygame.math.Vector2(self.rect.center)
 
-        if (self.distance.length() != 0):
+        if (self.distance.length() > self.safe_net):
             self.velocity = self.distance.normalize() * self.speed
             self.rect.x += self.velocity.x
             self.rect.y += self.velocity.y
