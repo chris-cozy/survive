@@ -8,6 +8,7 @@ from player import Player
 from projectile import Projectile
 from enemy import Enemy
 from powerup import Powerup
+from miniboss import Miniboss
 
 ### CONSTANTS ###
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 900, 700
@@ -15,6 +16,7 @@ ROOM_WIDTH, ROOM_HEIGHT = 800, 600
 BORDER_OFFSET = 15
 PLAYER_WIDTH, PLAYER_HEIGHT = 20, 20
 ENEMY_WIDTH, ENEMY_HEIGHT = 15, 15
+MINIBOSS_WIDTH, MINIBOSS_HEIGHT = 25, 25
 CAPTION = "survive!"
 KILL_ADD = 1
 SCORE_ADD = 10
@@ -25,7 +27,6 @@ CHANCE = 1
 
 ### GAME SETUP ###
 gameState = "startMenu"
-
 difficulties = ["easy", "medium", "hard", "crazy", "impossible"]
 powerupTypes = ["speed", "health", "fireRate"]
 
@@ -38,8 +39,6 @@ screen = Screen(CAPTION, SCREEN_SIZE, SCREEN_WIDTH,
                 SCREEN_HEIGHT)
 
 playing = True
-
-
 ### GAME LOOP ###
 while playing:
     for event in pygame.event.get():
@@ -161,13 +160,23 @@ while playing:
 
             # Enemy Spawn Updates #
             if ((time - spawnTime) > spawnRate):
-                enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
-                enemy.set_spawn(room_left, room_right,
-                                room_bottom, room_top, player)
-                enemies.append(enemy)
-                spriteList_Enemies.add(enemy)
-                spawnTime = time
-                print(enemies)
+                enemType = randint(1, 10)
+                if(enemType > 2):
+                    enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
+                    enemy.set_spawn(room_left, room_right,
+                                    room_bottom, room_top, player)
+                    enemies.append(enemy)
+                    spriteList_Enemies.add(enemy)
+                    spawnTime = time
+                    print(enemies)
+                else:
+                    enemy = Miniboss(MINIBOSS_WIDTH, MINIBOSS_HEIGHT)
+                    enemy.set_spawn(room_left, room_right,
+                                    room_bottom, room_top, player)
+                    enemies.append(enemy)
+                    spriteList_Enemies.add(enemy)
+                    spawnTime = time
+                    print(enemies)
 
             # Projectile, Enemy, and Collision Updates #
             for enem in enemies:
@@ -184,19 +193,21 @@ while playing:
                     projectiles.remove(proj)
                 for enem in enemies:
                     if pygame.sprite.collide_mask(proj, enem):
-                        player.kills += KILL_ADD
-                        player.score += SCORE_ADD
-                        # 20% chance to spawn a random powerup
-                        if (randint(1, 5) == CHANCE):
-                            powerup = Powerup(powerupTypes[randint(0, 2)])
-                            powerup.set_pos(enem)
-                            powerups.append(powerup)
-                            spriteList_Powerups.add(powerup)
-                            print(powerups)
-                        enem.damage()
+                        enem.damage(player)
                         proj.damage()
-                        enemies.remove(enem)
                         projectiles.remove(proj)
+                        if enem.dead == True:
+                            player.kills += KILL_ADD
+                            player.score += SCORE_ADD
+
+                            # 20% chance to spawn a random powerup
+                            if (randint(0, 100) < enem.powerupChance):
+                                powerup = Powerup(powerupTypes[randint(0, 2)])
+                                powerup.set_pos(enem)
+                                powerups.append(powerup)
+                                spriteList_Powerups.add(powerup)
+                                print(powerups)
+                            enemies.remove(enem)
 
              # Powerup Updates #
             for pow in powerups:

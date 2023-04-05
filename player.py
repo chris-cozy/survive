@@ -27,6 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.score = 0
         self.maxHealth = HEALTH
         self.health = HEALTH
+        self.attackPower = 10
         self.dead = False
         self.fireRate = 1
         self.fireTime = 0

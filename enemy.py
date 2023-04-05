@@ -27,6 +27,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = pygame.math.Vector2(self.rect.center)
 
+        self.powerupChance = 20
+        self.health = 10
         self.dead = False
 
     def set_spawn(self, room_left, room_right, room_bottom, room_top, player):
@@ -56,5 +58,8 @@ class Enemy(pygame.sprite.Sprite):
 
             self.pos += self.rect.center
 
-    def damage(self):
-        self.kill()
+    def damage(self, player):
+        self.health -= player.attackPower
+        if (self.health <= 0):
+            self.dead = True
+            self.kill()
