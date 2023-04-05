@@ -7,7 +7,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255), (14, 217, 246)]
-FONT_SIZE = 50
+FONT_SIZE = 35
 
 
 class Screen():
@@ -29,16 +29,16 @@ class Screen():
         spriteList.draw(self.surface)
 
     def display_text(self, player, time, difficulty):
-        font = pygame.font.Font(None, FONT_SIZE)
-        text = font.render(str(player.kills) + "kills", 1, WHITE)
+        font = pygame.font.Font("cyber.ttf", FONT_SIZE)
+        text = font.render(str(player.kills) + "  kills", 1, WHITE)
         self.surface.blit(text, (self.screenWidth/4, 10))
 
         pygame.draw.rect(self.surface, (255, 0, 0),
-                         [((self.screenWidth/4) * 2) - 25, 10, 100, 15])
+                         [((self.screenWidth/4) * 2) - 25, 10, player.maxHealth, 15])
         pygame.draw.rect(self.surface, (0, 128, 0),
-                         [((self.screenWidth/4) * 2) - 25, 10, 100 - (1 * ((player.maxHealth - player.health))), 15])
+                         [((self.screenWidth/4) * 2) - 25, 10, player.maxHealth - (1 * ((player.maxHealth - player.health))), 15])
 
-        text = font.render("Time: " + str(time), 1, WHITE)
+        text = font.render(str(time) + "  seconds", 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
 
         text = font.render(difficulty, 1, WHITE)
@@ -47,7 +47,7 @@ class Screen():
 
     def draw_start_menu(self):
         self.surface.fill((0, 0, 0))
-        font = pygame.font.SysFont(None, FONT_SIZE)
+        font = pygame.font.Font("cyber.ttf", FONT_SIZE)
         title = font.render('SURV!V3', True, COLORS[randint(0, 5)])
         start_button = font.render(
             'Press Space to Start', True, WHITE)
@@ -59,7 +59,7 @@ class Screen():
 
     def draw_game_over_screen(self):
         self.surface.fill((0, 0, 0))
-        font = pygame.font.SysFont(None, FONT_SIZE)
+        font = pygame.font.Font("cyber.ttf", FONT_SIZE)
         title = font.render('Game Over', True, (255, 255, 255))
         restart_button = font.render('R - Restart', True, (255, 255, 255))
         quit_button = font.render('Q - Quit', True, (255, 255, 255))
