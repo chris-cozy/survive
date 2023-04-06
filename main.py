@@ -9,6 +9,7 @@ from projectile import Projectile
 from enemy import Enemy
 from powerup import Powerup
 from miniboss import Miniboss
+from turret import Turret
 
 ### CONSTANTS ###
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 900, 700
@@ -17,13 +18,12 @@ BORDER_OFFSET = 15
 PLAYER_WIDTH, PLAYER_HEIGHT = 20, 20
 ENEMY_WIDTH, ENEMY_HEIGHT = 15, 15
 MINIBOSS_WIDTH, MINIBOSS_HEIGHT = 25, 25
+TURRET_WIDTH, TURRET_HEIGHT = 20, 20
 CAPTION = "survive!"
 KILL_ADD = 1
-SCORE_ADD = 10
 MILLI_CONV = 1000
 COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255), (110, 109, 113), (255, 255, 255)]
-CHANCE = 1
 
 ### GAME SETUP ###
 gameState = "startMenu"
@@ -85,7 +85,8 @@ while playing:
         aim_len = 50
 
         # Projectile Initialization #
-        projectiles = []
+        playerProjectiles = []
+        enemyProjectiles = []
 
         # Enemy Initialization #
         enemies = []
@@ -125,10 +126,10 @@ while playing:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if((rawTime - player.fireTime) > player.fireRate):
                         projectile = Projectile(aim_start, mouse, time)
-                        projectiles.append(projectile)
+                        playerProjectiles.append(projectile)
                         spriteList_Projs.add(projectile)
                         player.fireTime = rawTime
-                        print(projectiles)
+                        print(playerProjectiles)
 
             # Player Updates #
             player.check_keys(room_bottom, room_top, room_left, room_right)
@@ -161,14 +162,20 @@ while playing:
             # Enemy Spawn Updates #
             if ((time - spawnTime) > spawnRate):
                 enemType = randint(1, 10)
-                if(enemType > 2):
+                if(enemType > 6):
                     enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
                     enemy.set_spawn(room_left, room_right,
                                     room_bottom, room_top, player)
                     enemies.append(enemy)
                     spriteList_Enemies.add(enemy)
                     spawnTime = time
-                    print(enemies)
+                elif(6 >= enemType > 2):
+                    enemy = Turret(TURRET_WIDTH, TURRET_HEIGHT)
+                    enemy.set_spawn(room_left, room_right,
+                                    room_bottom, room_top, player)
+                    enemies.append(enemy)
+                    spriteList_Enemies.add(enemy)
+                    spawnTime = time
                 else:
                     enemy = Miniboss(MINIBOSS_WIDTH, MINIBOSS_HEIGHT)
                     enemy.set_spawn(room_left, room_right,
@@ -176,29 +183,37 @@ while playing:
                     enemies.append(enemy)
                     spriteList_Enemies.add(enemy)
                     spawnTime = time
-                    print(enemies)
+                print(enemies)
 
             # Projectile, Enemy, and Collision Updates #
             for enem in enemies:
                 enem.tracking(player)
+                if (enem.type == 'turret'):
+                    if((rawTime - enem.fireTime) > enem.fireRate):
+                        projectile = Projectile(
+                            enem.aim_start, player.rect.center, time)
+                        enemyProjectiles.append(projectile)
+                        spriteList_Projs.add(projectile)
+                        enem.fireTime = rawTime
+                        print(enemyProjectiles)
                 if pygame.sprite.collide_mask(enem, player):
                     if ((time - player.hurtTime) > player.invTime):
                         player.damage()
                         player.hurtTime = time
 
-            for proj in projectiles:
+            for proj in playerProjectiles:
                 proj.update_pos()
                 if (proj.life_over(time)):
                     proj.damage()
-                    projectiles.remove(proj)
+                    playerProjectiles.remove(proj)
                 for enem in enemies:
                     if pygame.sprite.collide_mask(proj, enem):
                         enem.damage(player)
                         proj.damage()
-                        projectiles.remove(proj)
+                        playerProjectiles.remove(proj)
                         if enem.dead == True:
                             player.kills += KILL_ADD
-                            player.score += SCORE_ADD
+                            player.score += enem.score
 
                             # 20% chance to spawn a random powerup
                             if (randint(0, 100) < enem.powerupChance):
@@ -209,7 +224,17 @@ while playing:
                                 print(powerups)
                             enemies.remove(enem)
 
-             # Powerup Updates #
+            for proj in enemyProjectiles:
+                proj.update_pos()
+                if (proj.life_over(time)):
+                    proj.damage()
+                    enemyProjectiles.remove(proj)
+                if pygame.sprite.collide_mask(proj, player):
+                    player.damage()
+                    proj.damage()
+                    enemyProjectiles.remove(proj)
+
+         # Powerup Updates #
             for pow in powerups:
                 if pygame.sprite.collide_mask(pow, player):
                     player.add_powerup(pow)

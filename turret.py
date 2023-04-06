@@ -7,16 +7,16 @@ COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255)]
 
 
-class Miniboss(pygame.sprite.Sprite):
+class Turret(pygame.sprite.Sprite):
 
     def __init__(self, width, height):
         super().__init__()
         self.width = width
         self.height = height
-        self.type = "miniboss"
+        self.type = "turret"
 
         self.velocity = 0
-        self.speed = 2
+        self.speed = 3
 
         self.image = pygame.Surface([self.width, self.height])
         self.image.fill(BLACK)
@@ -28,9 +28,13 @@ class Miniboss(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = pygame.math.Vector2(self.rect.center)
 
-        self.powerupChance = 100
+        self.fireTime = 0
+        self.fireRate = 2
+        self.aim_start = 0
+        self.aim_end = 0
+        self.powerupChance = 50
         self.health = 30
-        self.score = 50
+        self.score = 25
         self.dead = False
 
     def set_spawn(self, room_left, room_right, room_bottom, room_top, player):
@@ -40,7 +44,7 @@ class Miniboss(pygame.sprite.Sprite):
         self.distanceFromPlayer = pygame.math.Vector2(
             player.rect.center).distance_to((self.spawnX, self.spawnY))
 
-        while (abs(self.distanceFromPlayer) < 30):
+        while (abs(self.distanceFromPlayer) < 50):
             self.spawnX = randint(room_left, room_right)
             self.spawnY = randint(room_bottom, room_top)
 
@@ -49,16 +53,13 @@ class Miniboss(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
 
     def tracking(self, player):
-        self.safe_net = (player.width/2) + (self.width/2)
-        self.distance = pygame.math.Vector2(
-            player.rect.center) - pygame.math.Vector2(self.rect.center)
+        # Aim Initialization #
+        self.aim_start = pygame.math.Vector2(self.rect.center)
+        self.aim_len = 30
 
-        if (self.distance.length() > self.safe_net):
-            self.velocity = self.distance.normalize() * self.speed
-            self.rect.x += self.velocity.x
-            self.rect.y += self.velocity.y
-
-            self.pos += self.rect.center
+        self.player_pos = pygame.math.Vector2(player.rect.center)
+        self.aim_end = self.aim_start + \
+            (self.player_pos - self.aim_start).normalize() * self.aim_len
 
     def damage(self, player):
         self.health -= player.attackPower

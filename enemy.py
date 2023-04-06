@@ -13,6 +13,7 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.width = width
         self.height = height
+        self.type = "base"
 
         self.velocity = 0
         self.speed = 3
@@ -29,6 +30,7 @@ class Enemy(pygame.sprite.Sprite):
 
         self.powerupChance = 20
         self.health = 10
+        self.score = 10
         self.dead = False
 
     def set_spawn(self, room_left, room_right, room_bottom, room_top, player):

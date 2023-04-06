@@ -30,20 +30,20 @@ class Screen():
 
     def display_text(self, player, time, difficulty):
         font = pygame.font.Font("cyber.ttf", FONT_SIZE)
-        text = font.render(str(player.kills) + "  kills", 1, WHITE)
-        self.surface.blit(text, (self.screenWidth/4, 10))
+        text = font.render(str(player.score) + "  score", 1, WHITE)
+        self.surface.blit(text, ((self.screenWidth/8), 10))
 
         pygame.draw.rect(self.surface, (255, 0, 0),
-                         [((self.screenWidth/4) * 2) - 25, 10, player.maxHealth, 15])
+                         [((self.screenWidth/4) * 2) - (player.maxHealth/2), 10, player.maxHealth, 15])
         pygame.draw.rect(self.surface, (0, 128, 0),
-                         [((self.screenWidth/4) * 2) - 25, 10, player.maxHealth - (1 * ((player.maxHealth - player.health))), 15])
+                         [((self.screenWidth/4) * 2) - (player.maxHealth/2), 10, player.maxHealth - (1 * ((player.maxHealth - player.health))), 15])
 
         text = font.render(str(time) + "  seconds", 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
 
         text = font.render(difficulty, 1, WHITE)
-        self.surface.blit(text, ((self.screenWidth/4) *
-                                 2, (self.screenHeight - 50)))
+        self.surface.blit(
+            text, ((self.screenWidth/2) - (text.get_width()/2), (self.screenHeight - 50)))
 
     def draw_start_menu(self):
         self.surface.fill((0, 0, 0))
