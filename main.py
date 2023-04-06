@@ -28,7 +28,8 @@ COLOR_DICT = {
     "neon blue": (31, 81, 255),
     "neon red": (255, 49, 49),
     "violet": (127, 0, 255),
-    "neon orange": (255, 95, 31)
+    "neon orange": (255, 95, 31),
+    "golden yellow": (255, 192, 0)
 }
 
 ### GAME SETUP ###
@@ -227,7 +228,8 @@ while playing:
 
                             # 20% chance to spawn a random powerup
                             if (randint(0, 100) < enem.powerupChance):
-                                powerup = Powerup(powerupTypes[randint(0, 2)])
+                                powerup = Powerup(powerupTypes[randint(
+                                    0, 2)], COLOR_DICT["golden yellow"])
                                 powerup.set_pos(enem)
                                 powerups.append(powerup)
                                 spriteList_Powerups.add(powerup)
@@ -269,6 +271,10 @@ while playing:
             for enem in enemies:
                 screen.blit(enem.bloom, (pygame.math.Vector2(
                     enem.rect.center) - pygame.math.Vector2((enem.bloomWidth)/2.0)))
+
+            for pow in powerups:
+                screen.blit(pow.bloom, (pygame.math.Vector2(
+                    pow.rect.center) - pygame.math.Vector2((pow.bloomWidth)/2.0)))
 
             # Draw the Aim for debugging
             # pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
