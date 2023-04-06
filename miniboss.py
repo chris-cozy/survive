@@ -15,6 +15,13 @@ class Miniboss(pygame.sprite.Sprite):
         self.velocity = 0
         self.speed = 2
 
+        self.bloomWidth = width + 4
+        self.bloomHeight = height + 4
+        self.bloom = pygame.Surface([self.bloomWidth, self.bloomHeight])
+        self.bloom.set_alpha(75)
+        self.bloom.fill(color)
+        self.bloom.set_colorkey(BLACK)
+
         self.image = pygame.Surface([self.width, self.height])
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)

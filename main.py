@@ -263,8 +263,12 @@ while playing:
             screen.draw(spriteList_Enemies)
             screen.draw(spriteList_Powerups)
             screen.display_text(player, time, difficulty)
-            screen.blit(
-                player.bloom, (pygame.math.Vector2(player.rect.center) - pygame.math.Vector2((player.bloomWidth)/2.0)))
+            screen.blit(player.bloom, (pygame.math.Vector2(
+                player.rect.center) - pygame.math.Vector2((player.bloomWidth)/2.0)))
+
+            for enem in enemies:
+                screen.blit(enem.bloom, (pygame.math.Vector2(
+                    enem.rect.center) - pygame.math.Vector2((enem.bloomWidth)/2.0)))
 
             # Draw the Aim for debugging
             # pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)
@@ -274,7 +278,7 @@ while playing:
             clock.tick(60)
 
     elif gameState == "gameOver":
-        screen.draw_game_over_screen()
+        screen.draw_game_over_screen(player)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_r]:
             gameState = "inGame"
