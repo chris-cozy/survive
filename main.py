@@ -253,6 +253,8 @@ while playing:
             screen.draw(spriteList_Enemies)
             screen.draw(spriteList_Powerups)
             screen.display_text(player, time, difficulty)
+            screen.blit(
+                player.bloom, (pygame.math.Vector2(player.rect.center) - pygame.math.Vector2((player.bloomWidth)/2.0)))
 
             # Draw the Aim for debugging
             # pygame.draw.line(screen.surface, (255, 0, 0), aim_start, aim_end)

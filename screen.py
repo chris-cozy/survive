@@ -28,6 +28,9 @@ class Screen():
     def draw(self, spriteList):
         spriteList.draw(self.surface)
 
+    def blit(self, surface, coords):
+        self.surface.blit(surface, coords)
+
     def display_text(self, player, time, difficulty):
         font = pygame.font.Font("cyber.ttf", FONT_SIZE)
         text = font.render(str(player.score) + "  score", 1, WHITE)
