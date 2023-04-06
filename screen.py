@@ -41,6 +41,11 @@ class Screen():
         pygame.draw.rect(self.surface, (0, 128, 0),
                          [((self.screenWidth/4) * 2) - (player.maxHealth/2), 10, player.maxHealth - (1 * ((player.maxHealth - player.health))), 15])
 
+        text = font.render("Speed: " + str(player.velocity) +
+                           "\tShot Cooldown: " + str(player.fireRate), 1, WHITE)
+        self.surface.blit(
+            text, (((self.screenWidth/4) * 2) - (text.get_width()/2), 10))
+
         text = font.render(str(time) + "  seconds", 1, WHITE)
         self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
 
