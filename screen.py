@@ -7,7 +7,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255), (14, 217, 246)]
-FONT_SIZE = 35
+FONT_SIZE = 30
+SMALL_FONT_SIZE = 20
 
 
 class Screen():
@@ -32,22 +33,26 @@ class Screen():
         self.surface.blit(surface, coords)
 
     def display_text(self, player, time, difficulty):
-        font = pygame.font.Font("cyber.ttf", FONT_SIZE)
-        text = font.render(str(player.score) + "  score", 1, WHITE)
-        self.surface.blit(text, ((self.screenWidth/8), 10))
-
-        pygame.draw.rect(self.surface, (255, 0, 0),
-                         [((self.screenWidth/4) * 2) - (player.maxHealth/2), 10, player.maxHealth, 15])
-        pygame.draw.rect(self.surface, (0, 128, 0),
-                         [((self.screenWidth/4) * 2) - (player.maxHealth/2), 10, player.maxHealth - (1 * ((player.maxHealth - player.health))), 15])
-
-        text = font.render("Speed: " + str(player.velocity) +
-                           "\tShot Cooldown: " + str(player.fireRate), 1, WHITE)
+        font = pygame.font.Font("cyber.ttf", SMALL_FONT_SIZE)
+        text = font.render("Speed: " + str(player.velocity), 1, WHITE)
         self.surface.blit(
-            text, (((self.screenWidth/4) * 2) - (text.get_width()/2), 10))
+            text, ((self.screenWidth/8), 5))
+        text = font.render("Shot Cooldown: " + str(player.fireRate), 1, WHITE)
+        self.surface.blit(
+            text, ((self.screenWidth/8), 25))
 
+        text = font.render(str(player.score) + "  score", 1, WHITE)
+        self.surface.blit(
+            text, (((self.screenWidth/4) * 2) - (text.get_width()/2), 5))
         text = font.render(str(time) + "  seconds", 1, WHITE)
-        self.surface.blit(text, ((self.screenWidth/4) * 3, 10))
+        self.surface.blit(
+            text, (((self.screenWidth/4) * 2) - (text.get_width()/2), 25))
+
+        font = pygame.font.Font("cyber.ttf", FONT_SIZE)
+        pygame.draw.rect(self.surface, (255, 0, 0),
+                         [((self.screenWidth/4) * 3), 10, player.maxHealth, 15])
+        pygame.draw.rect(self.surface, (0, 128, 0),
+                         [((self.screenWidth/4) * 3), 10, player.maxHealth - (1 * ((player.maxHealth - player.health))), 15])
 
         text = font.render(difficulty, 1, WHITE)
         self.surface.blit(
