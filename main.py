@@ -24,6 +24,12 @@ KILL_ADD = 1
 MILLI_CONV = 1000
 COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
           (222, 0, 67), (248, 135, 255), (110, 109, 113), (255, 255, 255)]
+COLOR_DICT = {
+    "neon blue": (31, 81, 255),
+    "neon red": (255, 49, 49),
+    "violet": (127, 0, 255),
+    "neon orange": (255, 95, 31)
+}
 
 ### GAME SETUP ###
 gameState = "startMenu"
@@ -74,7 +80,7 @@ while playing:
         border.set_pos(x_offset, y_offset)
 
         # Player Initialization #
-        player = Player(PLAYER_WIDTH, PLAYER_HEIGHT)
+        player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, COLOR_DICT["neon blue"])
         x_offset = (SCREEN_WIDTH - PLAYER_WIDTH)/2
         y_offset = (SCREEN_HEIGHT - PLAYER_HEIGHT)/2
         player.set_pos(x_offset, y_offset)
@@ -125,7 +131,8 @@ while playing:
                         pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if((rawTime - player.fireTime) > player.fireRate):
-                        projectile = Projectile(aim_start, mouse, time)
+                        projectile = Projectile(
+                            aim_start, mouse, time, COLOR_DICT["neon blue"])
                         playerProjectiles.append(projectile)
                         spriteList_Projs.add(projectile)
                         player.fireTime = rawTime
@@ -163,21 +170,24 @@ while playing:
             if ((time - spawnTime) > spawnRate):
                 enemType = randint(1, 10)
                 if(enemType > 6):
-                    enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT)
+                    enemy = Enemy(ENEMY_WIDTH, ENEMY_HEIGHT,
+                                  COLOR_DICT["neon red"])
                     enemy.set_spawn(room_left, room_right,
                                     room_bottom, room_top, player)
                     enemies.append(enemy)
                     spriteList_Enemies.add(enemy)
                     spawnTime = time
                 elif(6 >= enemType > 2):
-                    enemy = Turret(TURRET_WIDTH, TURRET_HEIGHT)
+                    enemy = Turret(TURRET_WIDTH, TURRET_HEIGHT,
+                                   COLOR_DICT["neon red"])
                     enemy.set_spawn(room_left, room_right,
                                     room_bottom, room_top, player)
                     enemies.append(enemy)
                     spriteList_Enemies.add(enemy)
                     spawnTime = time
                 else:
-                    enemy = Miniboss(MINIBOSS_WIDTH, MINIBOSS_HEIGHT)
+                    enemy = Miniboss(
+                        MINIBOSS_WIDTH, MINIBOSS_HEIGHT, COLOR_DICT["violet"])
                     enemy.set_spawn(room_left, room_right,
                                     room_bottom, room_top, player)
                     enemies.append(enemy)
@@ -191,7 +201,7 @@ while playing:
                 if (enem.type == 'turret'):
                     if((rawTime - enem.fireTime) > enem.fireRate):
                         projectile = Projectile(
-                            enem.aim_start, player.rect.center, time)
+                            enem.aim_start, player.rect.center, time, COLOR_DICT["neon red"])
                         enemyProjectiles.append(projectile)
                         spriteList_Projs.add(projectile)
                         enem.fireTime = rawTime

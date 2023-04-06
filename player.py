@@ -1,9 +1,7 @@
 import pygame
 
 BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
-COLORS = [(41, 19, 46), (50, 20, 80), (134, 0, 41),
-          (222, 0, 67), (248, 135, 255)]
+
 HEALTH = 100
 ENEMY_DAMAGE = 50
 POWERUP_TYPES = ["speed", "health", "fireRate"]
@@ -11,7 +9,7 @@ POWERUP_TYPES = ["speed", "health", "fireRate"]
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, color):
         super().__init__()
         self.width = width
         self.height = height
@@ -19,14 +17,14 @@ class Player(pygame.sprite.Sprite):
         self.bloomHeight = height + 4
         self.bloom = pygame.Surface([self.bloomWidth, self.bloomHeight])
         self.bloom.set_alpha(75)
-        self.bloom.fill(COLORS[1])
+        self.bloom.fill(color)
         self.bloom.set_colorkey(BLACK)
 
         self.image = pygame.Surface([self.width, self.height])
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
 
-        pygame.draw.rect(self.image, COLORS[1], [
+        pygame.draw.rect(self.image, color, [
                          0, 0, self.width, self.height])
 
         self.velocity = 5
