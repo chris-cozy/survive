@@ -129,7 +129,9 @@ while playing:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_x:
-                        pygame.quit()
+                        gameState = "gameOver"
+                        inGame = False
+                        gameOver = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if((rawTime - player.fireTime) > player.fireRate):
                         projectile = Projectile(
