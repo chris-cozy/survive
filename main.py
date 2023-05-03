@@ -219,6 +219,7 @@ while playing:
                 if (proj.life_over(time)):
                     proj.damage()
                     playerProjectiles.remove(proj)
+                    continue
                 for enem in enemies:
                     if pygame.sprite.collide_mask(proj, enem):
                         enem.damage(player)
